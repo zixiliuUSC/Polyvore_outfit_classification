@@ -24,7 +24,6 @@ def train_model(get_dataloader, model, criterion, optimizer, device, num_epochs,
     train_acc = []
     test_acc = []
     unfreeze_num = 13
-    ratio = 0.45
     for epoch in range(num_epochs):
         dataloaders, classes, dataset_size = get_dataloader(debug=Config['debug'], batch_size=Config['batch_size'], num_workers=Config['num_workers'])
         print('Epoch {}/{}'.format(epoch+1, num_epochs))
@@ -48,20 +47,7 @@ def train_model(get_dataloader, model, criterion, optimizer, device, num_epochs,
                 with torch.set_grad_enabled(phase=='train'):
                     outputs = model(input1,input2)
                     _, pred = torch.max(outputs, 1)
-                    #loss = criterion(outputs, labels)
-                    #print(loss)
-
-                    if (epoch+1) in [7,8,9,17,18,19,22,23]:
-                        criterion.reduction = 'none'
-                        loss_inst = criterion(outputs,labels)
-                        num_inst = outputs.size(0)
-                        num_hns = int(ratio * num_inst)
-                        _, idxs = inst_losses.topk(num_hns) 
-                        loss = torch.mean(loss_inst.index_select(0, idxs))
-                        criterion.reduction = 'mean'
-                    else:
-                        criterion.reduction = 'mean'
-                        loss = criterion(outputs, labels)
+                    loss = criterion(outputs, labels)
 
                     if phase=='train':
                         loss.backward()
