@@ -25,8 +25,8 @@ class fashion_model(nn.Module):
         self.init_linear()
 
     def init_linear(self):
-        nn.init.xavier_uniform_(self.classifier[0].weight)
-        nn.init.xavier_uniform_(self.classifier[2].weight)
+        nn.init.xavier_uniform_(self.classifier[1].weight)
+        nn.init.xavier_uniform_(self.classifier[3].weight)
 
     def forward(self, input1, input2):
         emb1 = self.model(input1)
