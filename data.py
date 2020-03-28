@@ -163,7 +163,7 @@ class polyvore_dataset:
         dataset_train_reduce = []
         for key, value in self.comb_dic.items():
             clothes = self.X_train_category[key]
-            idx = random.sample(list(np.arange(value)),round(0.6*value))
+            idx = random.sample(list(np.arange(value)),round(0.7*value))
             if idx!=[]:
                 for i in idx:
                     dataset_train_reduce.append(self.X_train_category[key][i]) 
