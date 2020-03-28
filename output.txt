@@ -1,0 +1,5 @@
+Script started on 2020-03-28 02:28:28+0000
+[01;32mubuntu@ip-172-31-44-8[00m:[01;34m~/HW4/pytorch_prob3[00m$ ext[Kit
+exit
+
+Script done on 2020-03-28 02:28:47+0000
