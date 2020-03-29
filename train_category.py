@@ -52,12 +52,12 @@ def train_model(get_dataloader, model, criterion, optimizer, device, num_epochs,
                     #loss = criterion(outputs, labels)
                     #print(loss)
 
-                    if (epoch+1) in [3,8,17,18,19,22,23]:
+                    if (epoch+1) in [2,3,8,17,18,19,22,23]:
                         criterion.reduction = 'none'
                         loss_inst = criterion(outputs,labels)
                         num_inst = outputs.size(0)
                         num_hns = int(ratio * num_inst)
-                        _, idxs = inst_losses.topk(num_hns) 
+                        _, idxs = loss_inst.topk(num_hns) 
                         input1 = input1.index_select(0, idxs)
                         input2 = input2.index_select(0, idxs)
                         outputs = model(inputs1, input2)
