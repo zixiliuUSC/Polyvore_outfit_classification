@@ -52,7 +52,7 @@ def train_model(get_dataloader, model, criterion, optimizer, device, num_epochs,
                     #loss = criterion(outputs, labels)
                     #print(loss)
 
-                    if (epoch+1) in [7,8,17,18,19,22,23]:
+                    if (epoch+1) in [3,8,17,18,19,22,23]:
                         criterion.reduction = 'none'
                         loss_inst = criterion(outputs,labels)
                         num_inst = outputs.size(0)
