@@ -39,7 +39,7 @@ def train_model(get_dataloader, model, criterion, optimizer, device, num_epochs,
 
             running_loss = 0.0
             running_corrects = 0
-            if (epoch+1) in [2,3,8,17,18,19,22,23] and phase=='train':
+            if (epoch+1) in [1,2,3,8,17,18,19,22,23] and phase=='train':
                 num_OHEM = 0
 
 
