@@ -51,7 +51,7 @@ def train_model(get_dataloader, model, criterion, optimizer, device, num_epochs,
 
                 with torch.set_grad_enabled(phase=='train'):
                     outputs = model(input1,input2)
-                    print(input1.size())
+                    #print(input1.size())
                     _, pred = torch.max(outputs, 1)
                     #loss = criterion(outputs, labels)
                     #print(loss)
