@@ -79,7 +79,8 @@ def train_model(get_dataloader, model, criterion, optimizer, device, num_epochs,
                     if phase=='train':
                         loss.backward()
                         optimizer.step()
-                print(input1.size())
+                print('input1',input1.size())
+                print(pred.size(),labels.size())
                 running_loss += loss.item() * input1.size(0)
                 running_corrects += torch.sum(pred==labels.data)
 
