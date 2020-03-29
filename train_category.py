@@ -89,6 +89,17 @@ def train_model(get_dataloader, model, criterion, optimizer, device, num_epochs,
                 print('lr: {:.6f} -> {:.6f}'.format(param_group['lr'], param_group['lr'] * lr_decay))
                 param_group['lr'] *= lr_decay
 
+        epochs = np.arange(epoch+1)
+        plt.figure()
+        plt.plot(epochs, train_acc, label='loss')
+        plt.plot(epochs, test_acc, label='val_loss')
+        plt.xlabel('epochs')
+        plt.ylabel('Acc')
+        plt.legend()
+        plt.legend()
+        plt.show()
+        plt.savefig('learning_acc_temp.png', dpi=256)
+
     time_elapsed = time.time() - since
     print('Time taken to complete training: {:0f}m {:0f}s'.format(time_elapsed // 60, time_elapsed % 60))
     print('Best acc: {:.4f}'.format(best_acc))

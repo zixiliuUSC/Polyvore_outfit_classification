@@ -21,12 +21,12 @@ class fashion_model(nn.Module):
                 print("child ",child_counter," was not frozen")
                 child_counter += 1
         num_ftrs = mobilenet_v2(pretrained=True).classifier[1].in_features
-        self.classifier = nn.Sequential(nn.Dropout(0.2),nn.Linear(num_ftrs*2,100,True),nn.ReLU(),nn.Linear(100,2,True),nn.Softmax(dim=1))
-        #self.init_linear()
+        self.classifier = nn.Sequential(nn.Dropout(0.2),nn.Linear(num_ftrs*2,100,True),nn.ReLU(),nn.Linear(100,2,True))
+        self.init_linear()
 
     def init_linear(self):
-        nn.init.xavier_uniform_(self.classifier[0].weight)
-        nn.init.xavier_uniform_(self.classifier[2].weight)
+        nn.init.xavier_uniform_(self.classifier[1].weight)
+        nn.init.xavier_uniform_(self.classifier[3].weight)
 
     def forward(self, input1, input2):
         emb1 = self.model(input1)
