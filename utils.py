@@ -6,7 +6,7 @@ import argparse
 Config ={}
 Config['root_path'] = '/home/ubuntu/HW4/polyvore_outfits'
 Config['meta_file'] = 'polyvore_item_metadata.json'
-Config['checkpoint_path'] = 'checkpoint'
+Config['checkpoint_path'] = 'checkpoint_OHEM'
 
 
 Config['use_cuda'] = True

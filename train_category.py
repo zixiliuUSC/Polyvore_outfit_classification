@@ -57,9 +57,14 @@ def train_model(get_dataloader, model, criterion, optimizer, device, num_epochs,
                         loss_inst = criterion(outputs,labels)
                         num_inst = outputs.size(0)
                         num_hns = int(ratio * num_inst)
-                        _, idxs = loss_inst.topk(num_hns) 
-                        loss = torch.mean(loss_inst.index_select(0, idxs))
-                        criterion.reduction = 'mean' 
+                        _, idxs = inst_losses.topk(num_hns) 
+                        input1 = input1.index_select(0, idxs)
+                        input2 = input2.index_select(0, idxs)
+                        outputs = model(inputs1, input2)
+                        _,pred = torch.max(outputs,1)
+                        criterion.reduction = 'mean'
+                        loss = criterion(outputs, labels.index_select(0, idxs))
+                        #loss = torch.mean(loss_inst.index_select(0, idxs))
                     else:
                         criterion.reduction = 'mean'
                         loss = criterion(outputs, labels)
