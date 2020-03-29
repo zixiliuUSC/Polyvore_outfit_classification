@@ -60,7 +60,7 @@ def train_model(get_dataloader, model, criterion, optimizer, device, num_epochs,
                         _, idxs = loss_inst.topk(num_hns) 
                         input1 = input1.index_select(0, idxs)
                         input2 = input2.index_select(0, idxs)
-                        outputs = model(inputs1, input2)
+                        outputs = model(input1, input2)
                         _,pred = torch.max(outputs,1)
                         criterion.reduction = 'mean'
                         loss = criterion(outputs, labels.index_select(0, idxs))
