@@ -16,5 +16,5 @@ Config['batch_size'] = 125
 
 Config['learning_rate'] = 0.001
 Config['num_workers'] = 8
-Config['lr_decay'] = 1
+Config['lr_decay'] = 0.998
 
