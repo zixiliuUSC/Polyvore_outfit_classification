@@ -61,11 +61,12 @@ def train_model(get_dataloader, model, criterion, optimizer, device, num_epochs,
                         loss_inst = criterion(outputs,labels)
                         num_inst = outputs.size(0)
                         num_hns = int(ratio * num_inst)
-                        num_OHEM = num_hns+num_OHEM
+                        
                         _, idxs = loss_inst.topk(num_hns) 
                         input1 = input1.index_select(0, idxs)
                         input2 = input2.index_select(0, idxs)
                         labels = labels.index_select(0, idxs)
+                        num_OHEM = input1.size(0)+num_OHEM
                         optimizer.zero_grad()
                         outputs = model(input1, input2)
                         _,pred = torch.max(outputs,1)
@@ -83,6 +84,8 @@ def train_model(get_dataloader, model, criterion, optimizer, device, num_epochs,
                 print(pred.size(),labels.size())
                 running_loss += loss.item() * input1.size(0)
                 running_corrects += torch.sum(pred==labels.data)
+                print('num',num_OHEM)
+                print(torch.sum(pred==labels.data))
 
             if (epoch+1) in [2,3,8,17,18,19,22,23] and phase=='train':
                 epoch_loss = running_loss / num_OHEM
