@@ -39,6 +39,9 @@ def train_model(get_dataloader, model, criterion, optimizer, device, num_epochs,
 
             running_loss = 0.0
             running_corrects = 0
+            if (epoch+1) in [2,3,8,17,18,19,22,23] and phase=='train':
+                num_OHEM = 0
+
 
             for input1, input2, labels in tqdm(dataloaders[phase]):
                 input1 = input1.to(device)
@@ -52,15 +55,17 @@ def train_model(get_dataloader, model, criterion, optimizer, device, num_epochs,
                     #loss = criterion(outputs, labels)
                     #print(loss)
 
-                    if (epoch+1) in [2,3,8,17,18,19,22,23]:
+                    if (epoch+1) in [2,3,8,17,18,19,22,23] and phase=='train':
                         criterion.reduction = 'none'
                         loss_inst = criterion(outputs,labels)
                         num_inst = outputs.size(0)
                         num_hns = int(ratio * num_inst)
+                        num_OHEM = num_hns+num_OHEM
                         _, idxs = loss_inst.topk(num_hns) 
                         input1 = input1.index_select(0, idxs)
                         input2 = input2.index_select(0, idxs)
                         labels = labels.index_select(0, idxs)
+                        optimizer.zero_grad()
                         outputs = model(input1, input2)
                         _,pred = torch.max(outputs,1)
                         criterion.reduction = 'mean'
@@ -74,12 +79,15 @@ def train_model(get_dataloader, model, criterion, optimizer, device, num_epochs,
                         loss.backward()
                         optimizer.step()
 
-
                 running_loss += loss.item() * input1.size(0)
                 running_corrects += torch.sum(pred==labels.data)
 
-            epoch_loss = running_loss / dataset_size[phase]
-            epoch_acc = running_corrects.double() / dataset_size[phase]
+            if (epoch+1) in [2,3,8,17,18,19,22,23] and phase=='train':
+                epoch_loss = running_loss / num_OHEM
+                epoch_acc = running_corrects.double() / num_OHEM
+            else:
+                epoch_loss = running_loss / dataset_size[phase]
+                epoch_acc = running_corrects.double() / dataset_size[phase]
 
             print('{} Loss: {:.4f} Acc: {:.4f}'.format(phase, epoch_loss, epoch_acc))
             if phase=='train':
