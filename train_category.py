@@ -17,6 +17,7 @@ from data import get_dataloader
 
 
 def train_model(get_dataloader, model, criterion, optimizer, device, num_epochs, lr_decay,warmup=5):
+    dataloaders, classes, dataset_size = get_dataloader(debug=Config['debug'], batch_size=Config['batch_size'], num_workers=Config['num_workers'])
     model.to(device)
     since = time.time()
     best_model_wts = copy.deepcopy(model.state_dict())
@@ -26,7 +27,7 @@ def train_model(get_dataloader, model, criterion, optimizer, device, num_epochs,
     unfreeze_num = 13
     ratio = 0.45
     for epoch in range(num_epochs):
-        dataloaders, classes, dataset_size = get_dataloader(debug=Config['debug'], batch_size=Config['batch_size'], num_workers=Config['num_workers'])
+        
         print('Epoch {}/{}'.format(epoch+1, num_epochs))
         print('-' * 10)
 
@@ -51,7 +52,7 @@ def train_model(get_dataloader, model, criterion, optimizer, device, num_epochs,
                     #loss = criterion(outputs, labels)
                     #print(loss)
 
-                    if (epoch+1) in [7,8,9,17,18,19,22,23]:
+                    if (epoch+1) in [7,8,17,18,19,22,23]:
                         criterion.reduction = 'none'
                         loss_inst = criterion(outputs,labels)
                         num_inst = outputs.size(0)
@@ -102,6 +103,16 @@ def train_model(get_dataloader, model, criterion, optimizer, device, num_epochs,
             for param_group in optimizer.param_groups:
                 print('lr: {:.6f} -> {:.6f}'.format(param_group['lr'], param_group['lr'] * lr_decay))
                 param_group['lr'] *= lr_decay
+        epochs = np.arange(Config['num_epochs'])
+        plt.figure()
+        plt.plot(epochs, train_acc, label='loss')
+        plt.plot(epochs, test_acc, label='val_loss')
+        plt.xlabel('epochs')
+        plt.ylabel('Acc')
+        plt.legend()
+        plt.legend()
+        plt.show()
+        plt.savefig('learning_acc_temp.png', dpi=256)
 
     time_elapsed = time.time() - since
     print('Time taken to complete training: {:0f}m {:0f}s'.format(time_elapsed // 60, time_elapsed % 60))
