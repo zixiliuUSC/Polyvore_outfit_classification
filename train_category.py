@@ -103,7 +103,7 @@ def train_model(get_dataloader, model, criterion, optimizer, device, num_epochs,
             for param_group in optimizer.param_groups:
                 print('lr: {:.6f} -> {:.6f}'.format(param_group['lr'], param_group['lr'] * lr_decay))
                 param_group['lr'] *= lr_decay
-        epochs = np.arange(Config['num_epochs'])
+        epochs = np.arange(epoch+1)
         plt.figure()
         plt.plot(epochs, train_acc, label='loss')
         plt.plot(epochs, test_acc, label='val_loss')
