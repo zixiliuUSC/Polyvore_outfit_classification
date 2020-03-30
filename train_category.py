@@ -17,6 +17,8 @@ from data import get_dataloader
 
 
 def train_model(get_dataloader, model, criterion, optimizer, device, num_epochs, lr_decay,warmup=5):
+     
+    dataloaders, classes, dataset_size = get_dataloader(debug=Config['debug'], batch_size=Config['batch_size'], num_workers=Config['num_workers'])
     model.to(device)
     since = time.time()
     best_model_wts = copy.deepcopy(model.state_dict())
@@ -25,7 +27,6 @@ def train_model(get_dataloader, model, criterion, optimizer, device, num_epochs,
     test_acc = []
     unfreeze_num = 13
     for epoch in range(num_epochs):
-        dataloaders, classes, dataset_size = get_dataloader(debug=Config['debug'], batch_size=Config['batch_size'], num_workers=Config['num_workers'])
         print('Epoch {}/{}'.format(epoch+1, num_epochs))
         print('-' * 10)
 
